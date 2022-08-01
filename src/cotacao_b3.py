@@ -21,7 +21,6 @@ with open('../acoes.txt') as f:
 with open('../ignoradas.txt') as f:
     ignoradas = [l.rstrip('\r\n') for l in f.readlines()]
 
-
 erros = []
 c = 0
 for acao in acoes:
@@ -29,8 +28,8 @@ for acao in acoes:
     c = c + 1
     print("Processando {0} ({1:0.2f}%)".format(acao, 100 * c / len(acoes)))
 
-    if acao in ignoradas:
-        continue
+#    if acao in ignoradas:
+#        continue
 
     if os.path.exists("{0}{1}.csv".format(DIR_CSV, acao)):
         continue
@@ -63,7 +62,8 @@ for acao in acoes:
         if len(pregao_plot) == 0:
             continue
 
-        if (pregao.dt_pregao_dt.max() != pd.Timestamp(date.today() - timedelta(days = 1))):
+        delta = 1 if date.today().weekday() == 2 else 3
+        if (pregao.dt_pregao_dt.max() != pd.Timestamp(date.today() - timedelta(days = delta))):
             continue
 
         fig, axes = plt.subplots(nrows = 2, ncols = 2, figsize = (15, 10))
